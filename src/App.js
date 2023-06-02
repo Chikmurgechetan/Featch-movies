@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 
 import MoviesList from "./components/MoviesList";
 import "./App.css";
+import MoviForm from "./components/MoviForm";
 
 function App() {
   const [movies, setMovies] = useState([]);
@@ -10,8 +11,7 @@ function App() {
   const [retryTimer, setRetryTimer] = useState(null);
   const [check, setCheck] = useState(false);
 
-  const fetchMovies = useCallback(async()=>
-  {
+  const fetchMovies = useCallback(async() => {
     setIsLoading(true);
     setError(null);
     try {
@@ -40,23 +40,22 @@ function App() {
       setRetryTimer(retryTimer);
     }
     setIsLoading(false);
-  },[]);
+  }, []);
 
-     useEffect(()=>{
-      fetchMovies();
-     },[fetchMovies])
-  
-   
+  useEffect(() => {
+    fetchMovies();
+  }, [fetchMovies]);
+
   const cancelRetryHandler = () => {
     clearTimeout(retryTimer);
     setCheck(false);
   };
- 
 
   return (
     <React.Fragment>
+     <MoviForm/>
       <section>
-        <button onClick={fetchMovies} disabled={isLoading}>
+     <button onClick={fetchMovies} disabled={isLoading}>
           Fetch Movies
         </button>
         {isLoading && <h1>Loading...</h1>}
@@ -69,9 +68,7 @@ function App() {
             <button onClick={cancelRetryHandler}>Cancel Retrying</button>
           </p>
         )}
-        {!isLoading && movies.length === 0 && !error && (
-          <p>Found no movies.</p>
-        )}
+        {!isLoading && movies.length === 0 && !error && <p>Found no movies.</p>}
         {!check && !isLoading && error && <p>Nothing to Show</p>}
       </section>
     </React.Fragment>
